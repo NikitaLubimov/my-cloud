@@ -1,14 +1,38 @@
 package ru.gb.cloudapplication;
 
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 
-public class HelloController {
-    @FXML
-    private Label welcomeText;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+
+public class HelloController implements Initializable {
 
     @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+    public VBox leftTable;
+    @FXML
+    public VBox rightTable;
+
+    private Network network;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            network = new Network(8189);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void pushFail(ActionEvent actionEvent) {
+
+    }
+
+    public void downFail(ActionEvent actionEvent) {
+
     }
 }
