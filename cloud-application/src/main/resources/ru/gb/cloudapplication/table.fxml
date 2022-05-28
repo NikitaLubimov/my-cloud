@@ -6,9 +6,9 @@
 <VBox alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.gb.cloudapplication.TableController">
     <HBox>
-        <ComboBox/>
-        <TextField editable="false" HBox.hgrow="ALWAYS"/>
-        <Button text="Вверх"/>
+        <ComboBox fx:id="diskBox"/>
+        <TextField fx:id="pathField" editable="false" HBox.hgrow="ALWAYS"/>
+        <Button text="Вверх" onAction="#upPath"/>
     </HBox>
         <TableView fx:id="tableViewClient" HBox.hgrow="ALWAYS" />
 </VBox>
