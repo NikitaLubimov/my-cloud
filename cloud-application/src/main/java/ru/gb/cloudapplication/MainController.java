@@ -1,9 +1,11 @@
 package ru.gb.cloudapplication;
 
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -15,7 +17,7 @@ public class MainController implements Initializable {
     @FXML
     public VBox leftTable;
     @FXML
-    public VBox rightTable;
+    public TableView serverTable;
 
     private Network network;
 
@@ -26,6 +28,10 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    public void reedloop () {
+
     }
 
     public void pushFail(ActionEvent actionEvent) {

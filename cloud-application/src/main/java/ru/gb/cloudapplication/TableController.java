@@ -18,7 +18,6 @@ public class TableController implements Initializable {
 
     @FXML
     public TableView<FileInfo> tableViewClient;
-
     @FXML
     public VBox cloudViewClient;
     @FXML

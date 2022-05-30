@@ -21,7 +21,7 @@
 
     <HBox VBox.vgrow="ALWAYS">
         <fx:include fx:id="leftTable" source="table.fxml" HBox.hgrow="ALWAYS"/>
-        <fx:include fx:id="rightTable" source="table.fxml" HBox.hgrow="ALWAYS"/>
+        <TableView HBox.hgrow="ALWAYS" fx:id="serverTable"/>
     </HBox>
 
     <HBox spacing="5">
