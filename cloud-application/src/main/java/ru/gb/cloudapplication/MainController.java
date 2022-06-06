@@ -16,8 +16,7 @@ public class MainController implements Initializable {
 
     @FXML
     public VBox leftTable;
-    @FXML
-    public TableView serverTable;
+
 
     private Network network;
 
