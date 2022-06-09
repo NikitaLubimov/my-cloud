@@ -54,7 +54,7 @@
       </VBox.margin>
     </HBox>
 
-    <HBox style="-fx-background-color: gray;">
+    <HBox alignment="CENTER" style="-fx-background-color: gray;">
         <Button maxWidth="Infinity" onAction="#pushFail" text="Загрузить файл" HBox.hgrow="ALWAYS">
          <HBox.margin>
             <Insets right="5.0" />
@@ -69,7 +69,7 @@
          </HBox.margin></Button>
         <Button maxWidth="Infinity" text="Закрыть соеденение" HBox.hgrow="ALWAYS">
          <HBox.margin>
-            <Insets left="5.0" />
+            <Insets left="5.0" right="5.0" />
          </HBox.margin></Button>
       <padding>
          <Insets bottom="5.0" left="5.0" top="5.0" />
