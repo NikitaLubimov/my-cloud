@@ -35,7 +35,7 @@ public class Server {
             e.printStackTrace();
         } finally {
             auth.shutdownGracefully();
-            worker.shutdownGracefully()
+            worker.shutdownGracefully();
         }
     }
 }
