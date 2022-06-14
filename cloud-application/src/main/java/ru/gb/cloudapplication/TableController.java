@@ -3,9 +3,11 @@ package ru.gb.cloudapplication;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -69,6 +71,19 @@ public class TableController implements Initializable {
         }
         diskBox.getSelectionModel().select(0);
 
+
+        tableViewClient.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2) {
+                    Path path = Paths.get(pathField.getText()).resolve(tableViewClient.getSelectionModel().getSelectedItem().getFilename());
+                    if (Files.isDirectory(path)) {
+                        updateList(path);
+                    }
+                }
+            }
+        });
+
         updateList(Paths.get("."));
     }
 
@@ -89,5 +104,11 @@ public class TableController implements Initializable {
         if (upPath != null) {
             updateList(upPath);
         }
+    }
+
+    public void selectDiskAction(ActionEvent actionEvent) {
+            ComboBox<String> element = (ComboBox<String>) actionEvent.getSource();
+            updateList(Paths.get(element.getSelectionModel().getSelectedItem()));
+
     }
 }

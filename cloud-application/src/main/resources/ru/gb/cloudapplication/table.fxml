@@ -6,7 +6,7 @@
 
 <VBox alignment="CENTER" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.gb.cloudapplication.TableController">
     <HBox alignment="CENTER" fillHeight="false">
-        <ComboBox fx:id="diskBox">
+        <ComboBox fx:id="diskBox" onAction="#selectDiskAction">
          <HBox.margin>
             <Insets right="5.0" top="5.0" />
          </HBox.margin></ComboBox>

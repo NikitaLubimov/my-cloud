@@ -29,11 +29,11 @@
             </HBox.margin>
                </Label>
          </HBox>
-         <TextField alignment="CENTER_RIGHT" text="login" HBox.hgrow="ALWAYS">
+         <TextField alignment="CENTER_RIGHT" promptText="login" HBox.hgrow="ALWAYS">
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </HBox.margin></TextField>
-         <TextField alignment="CENTER_RIGHT" text="password" HBox.hgrow="ALWAYS">
+         <TextField alignment="CENTER_RIGHT" promptText="password" HBox.hgrow="ALWAYS">
          <opaqueInsets>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </opaqueInsets>
