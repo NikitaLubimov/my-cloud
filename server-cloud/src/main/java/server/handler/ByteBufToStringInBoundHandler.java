@@ -22,10 +22,13 @@ public class ByteBufToStringInBoundHandler extends ChannelInboundHandlerAdapter 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf buf = (ByteBuf) msg;
+        log.debug("received: {}", buf);
         StringBuilder s = new StringBuilder();
         while (buf.isReadable()) {
             byte readByte = buf.readByte();
             s.append((char) readByte);
         }
+        log.debug("processed message: {}", s);
+        ctx.fireChannelRead(s.toString());
     }
 }

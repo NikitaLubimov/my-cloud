@@ -1,30 +1,29 @@
 package ru.gb.cloudapplication;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
+import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
+import model.CloudMessage;
+
 import java.io.IOException;
 import java.net.Socket;
 
 public class Network {
 
-    private final int port;
-
-    private DataInputStream in;
-    private DataOutputStream out;
+    private ObjectDecoderInputStream is;
+    private ObjectEncoderOutputStream os;
 
     public Network(int port) throws IOException {
-        this.port = port;
         Socket socket = new Socket("localhost",port);
-        in = new DataInputStream(socket.getInputStream());
-        out = new DataOutputStream(socket.getOutputStream());
+        os = new ObjectEncoderOutputStream(socket.getOutputStream());
+        is = new ObjectDecoderInputStream(socket.getInputStream());
     }
 
-    public String readMSG() throws IOException {
-        return in.readUTF();
+    public CloudMessage read() throws IOException, ClassNotFoundException {
+       return (CloudMessage) is.readObject();
     }
 
-    public void writeMSG (String msg) throws IOException {
-        out.writeUTF(msg);
-        out.flush();
+    public void write(CloudMessage msg) throws IOException {
+        os.writeObject(msg);
+        os.flush();
     }
 }

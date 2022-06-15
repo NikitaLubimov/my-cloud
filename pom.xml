@@ -23,6 +23,7 @@
     <modules>
         <module>cloud-application</module>
         <module>server-cloud</module>
+        <module>cloud-model</module>
     </modules>
 
     <properties>
