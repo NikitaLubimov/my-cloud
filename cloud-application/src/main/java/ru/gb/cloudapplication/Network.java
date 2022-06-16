@@ -3,7 +3,6 @@ package ru.gb.cloudapplication;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
 import model.CloudMessage;
-
 import java.io.IOException;
 import java.net.Socket;
 
