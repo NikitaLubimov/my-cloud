@@ -41,6 +41,7 @@ public class MainController implements Initializable {
         }
     }
 
+    //текст
     public void pushFail(ActionEvent actionEvent) {
 
     }
