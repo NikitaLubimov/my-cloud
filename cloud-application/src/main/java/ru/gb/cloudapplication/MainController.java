@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import model.FileInfoServer;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -112,17 +114,21 @@ public class MainController implements Initializable {
 
     // Заполнение сервера таблицы
     private void readyServerTable() {
-        TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
-        fileTypeColumn.setPrefWidth(30);
+//        TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
+//        fileTypeColumn.setPrefWidth(30);
+//
+//        TableColumn<FileInfo, String> fileNameColumn = new TableColumn<>("Имя");
+//        fileNameColumn.setPrefWidth(180);
+//
+//        TableColumn<FileInfo, Long> fileSizeColumn = new TableColumn<>("Размер");
+//        fileSizeColumn.setPrefWidth(100);
+//
+//        tableViewServer.getColumns().addAll(fileTypeColumn, fileNameColumn, fileSizeColumn);
+//        tableViewServer.getSortOrder().add(fileTypeColumn);
 
-        TableColumn<FileInfo, String> fileNameColumn = new TableColumn<>("Имя");
-        fileNameColumn.setPrefWidth(180);
-
-        TableColumn<FileInfo, Long> fileSizeColumn = new TableColumn<>("Размер");
-        fileSizeColumn.setPrefWidth(100);
-
-        tableViewServer.getColumns().addAll(fileTypeColumn, fileNameColumn, fileSizeColumn);
-        tableViewServer.getSortOrder().add(fileTypeColumn);
+        TableColumn<FileInfoServer, String> fileTypeCplumn = new TableColumn<>();
+        fileTypeCplumn.setCellValueFactory(param -> new );
+        fileTypeCplumn.setPrefWidth(30);
 
     }
 
