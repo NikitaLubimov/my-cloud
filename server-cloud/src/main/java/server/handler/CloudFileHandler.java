@@ -31,7 +31,7 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CloudMessage cloudMessage) throws Exception {
-        if (cloudMessage instanceof ServerFilesListData serverFilesListData) {
+        if (cloudMessage instanceof FileRequest fileRequest) {
             ctx.writeAndFlush(new ServerFilesListData(filesStorage.getFilesOnServer(currentDir)));
         } else if (cloudMessage instanceof FileMessage fileMessage) {
 

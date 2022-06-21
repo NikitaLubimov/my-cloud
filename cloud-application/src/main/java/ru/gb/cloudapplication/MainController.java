@@ -10,8 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import model.CloudMessage;
-import model.FileInfoServer;
+import model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,9 +50,14 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+
         readyClientTable();
         readyServerTable();
-
+        try {
+            network.write(new FileRequest());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Заполнение клиент таблицы
