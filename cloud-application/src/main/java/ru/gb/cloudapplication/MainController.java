@@ -1,6 +1,7 @@
 package ru.gb.cloudapplication;
 
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import model.CloudMessage;
 import model.FileInfoServer;
 
 import java.io.IOException;
@@ -17,6 +19,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,7 @@ public class MainController implements Initializable {
 
     // поля сервера таблицы
     @FXML
-    public TableView<FileInfo> tableViewServer;
+    public TableView<FileInfoServer> tableViewServer;
     @FXML
     public TextField pathFieldServer;
     @FXML
@@ -48,7 +51,6 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
         readyClientTable();
         readyServerTable();
 
@@ -111,25 +113,38 @@ public class MainController implements Initializable {
         updateList(Paths.get("."));
     }
 
-
     // Заполнение сервера таблицы
     private void readyServerTable() {
-//        TableColumn<FileInfo, String> fileTypeColumn = new TableColumn<>();
-//        fileTypeColumn.setPrefWidth(30);
-//
-//        TableColumn<FileInfo, String> fileNameColumn = new TableColumn<>("Имя");
-//        fileNameColumn.setPrefWidth(180);
-//
-//        TableColumn<FileInfo, Long> fileSizeColumn = new TableColumn<>("Размер");
-//        fileSizeColumn.setPrefWidth(100);
-//
-//        tableViewServer.getColumns().addAll(fileTypeColumn, fileNameColumn, fileSizeColumn);
-//        tableViewServer.getSortOrder().add(fileTypeColumn);
 
-        TableColumn<FileInfoServer, String> fileTypeCplumn = new TableColumn<>();
-        fileTypeCplumn.setCellValueFactory(param -> new );
-        fileTypeCplumn.setPrefWidth(30);
+        TableColumn<FileInfoServer, String> fileNameColumnServer = new TableColumn<>("Имя");
+        fileNameColumnServer.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFileName()));
+        fileNameColumnServer.setPrefWidth(180);
 
+        TableColumn<FileInfoServer, Long> fileSizeColumnServer = new TableColumn<>("Размер");
+        fileSizeColumnServer.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getSize()));
+        fileSizeColumnServer.setPrefWidth(100);
+
+        fileSizeColumnServer.setCellFactory(column -> {
+            return new TableCell<FileInfoServer, Long>() {
+                @Override
+                protected void updateItem(Long item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        String text = String.format("%,d bytes", item);
+                        if (item == -1l) {
+                            text = "";
+                        }
+                        setText(text);
+                    }
+                }
+            };
+        });
+
+        tableViewServer.getColumns().addAll(fileNameColumnServer, fileSizeColumnServer);
+//        tableViewServer.sort(fileTypeColumnServer);
     }
 
     public void updateList(Path path) {
@@ -167,18 +182,6 @@ public class MainController implements Initializable {
     public void selectDiskActionServer(ActionEvent actionEvent) {
     }
 
-    //    private void readloop() {
-//        try {
-//            while (true) {
-//                String msg = network.readMSG();
-//                // Platform.runLater(() ->  Что ту тут надо);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-
     // отправка файла
     public void pushFail(ActionEvent actionEvent) {
 
@@ -187,5 +190,11 @@ public class MainController implements Initializable {
     // скачивание файла
     public void downFail(ActionEvent actionEvent) {
 
+    }
+
+    public void updateServerList (List<FileInfoServer> files) {
+        tableViewServer.getItems().clear();
+        tableViewServer.getItems().addAll(files);
+        tableViewServer.sort();
     }
 }

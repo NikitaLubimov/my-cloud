@@ -17,9 +17,11 @@ import server.handler.CloudFileHandler;
 
 @Slf4j
 public class Server {
+
     public static void main(String[] args) {
         EventLoopGroup auth = new NioEventLoopGroup(1);
         EventLoopGroup worker = new NioEventLoopGroup();
+        FilesStorage filesStorage = new FilesStorage();
 
         try {
             ServerBootstrap server = new ServerBootstrap();
@@ -31,7 +33,7 @@ public class Server {
                             socketChannel.pipeline().addLast(
                                 new ObjectDecoder(ClassResolvers.cacheDisabled(null)),
                                     new ObjectEncoder(),
-                                    new CloudFileHandler()
+                                    new CloudFileHandler(filesStorage)
                             );
                         }
                     });

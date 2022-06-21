@@ -1,66 +1,53 @@
 package model;
 
 
+import lombok.Data;
+
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 
-public class FileInfoServer {
+public class FileInfoServer implements CloudMessage {
+    public static final String HOME_DIR_NAME = " . . ";
 
-    public enum FileTypeServer {
-        FILE("F"), DIRECTORY("D");
+    private String fileName;
+    private long size;
+    private boolean isDir;
 
-        private String name;
 
-        FileTypeServer(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
+    public String getFileName() {
+        return fileName;
     }
 
-    private String filename;
-    private FileTypeServer fileType;
-    private long filesize;
-
-    public String getFilename() {
-        return filename;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public FileTypeServer getFileType() {
-        return fileType;
+    public long getSize() {
+        return size;
     }
 
-    public long getFilesize() {
-        return filesize;
+    public void setSize(long size) {
+        this.size = size;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public boolean isDir() {
+        return isDir;
     }
 
-    public void setFileType(FileTypeServer fileType) {
-        this.fileType = fileType;
+    public void setDir(boolean dir) {
+        isDir = dir;
     }
 
-    public void setFilesize(long filesize) {
-        this.filesize = filesize;
-    }
 
-    public FileInfoServer(Path path) {
-        try {
-            this.filename = path.getFileName().toString();
-            this.filesize = Files.size(path);
-            this.fileType = Files.isDirectory(path) ? FileTypeServer.DIRECTORY : FileTypeServer.FILE;
-
-            if (this.fileType == FileTypeServer.DIRECTORY) {
-                this.filesize = -1l;
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to create file info from path");
-        }
+    @Override
+    public String toString() {
+        return "ServerFile{" +
+                (isDir ? "directory='": "fileName='")
+                + fileName + '\'' +
+                ", size=" + size + " bytes"+
+                '}';
     }
 }
