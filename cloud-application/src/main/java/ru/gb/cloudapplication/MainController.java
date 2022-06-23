@@ -46,13 +46,26 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            network = new Network(8189);
+            network = new Network(8189 , this);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
         readyClientTable();
         readyServerTable();
+
+        Thread msgListener = new Thread(() -> {
+            try {
+                network.msgReader();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        msgListener.setDaemon(true);
+        msgListener.start();
+
         try {
             network.write(new FileRequest());
         } catch (IOException e) {

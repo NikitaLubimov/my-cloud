@@ -32,6 +32,14 @@ public class FilesStorage {
 
 
     public List<FileInfoServer> getFilesOnServer(Path currentDirectory) {
-        return (List<FileInfoServer>) prepareFileInfo(currentDirectory);
+        List<FileInfoServer> list = new ArrayList<>();
+        File folder = new File(currentDirectory.toString());
+        File [] files = folder.listFiles();
+
+        assert files != null;
+        for (File fl:files) {
+            list.add(prepareFileInfo(fl.toPath()));
+        }
+        return list;
     }
 }
