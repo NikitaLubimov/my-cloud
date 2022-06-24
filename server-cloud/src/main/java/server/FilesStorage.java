@@ -1,6 +1,7 @@
 package server;
 
 import model.FileInfoServer;
+import model.ServerPathInRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,6 @@ public class FilesStorage {
         return parent;
     }
 
-
     public List<FileInfoServer> getFilesOnServer(Path currentDirectory) {
         List<FileInfoServer> list = new ArrayList<>();
         File folder = new File(currentDirectory.toString());
@@ -41,5 +41,18 @@ public class FilesStorage {
             list.add(prepareFileInfo(fl.toPath()));
         }
         return list;
+    }
+
+    public Path currentDirUp (Path path) {
+        return path.getParent();
+    }
+
+    public Path getUserPathStart () {
+        return Path.of(DIRECTORY);
+    }
+
+    public Path currentDirIn (ServerPathInRequest spir, Path path) {
+        Path newPath = path.resolve(spir.getNameDirect());
+        return newPath;
     }
 }

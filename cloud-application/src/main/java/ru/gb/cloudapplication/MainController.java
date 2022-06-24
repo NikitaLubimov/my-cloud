@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import model.*;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -162,6 +161,24 @@ public class MainController implements Initializable {
 
         tableViewServer.getColumns().addAll(fileNameColumnServer, fileSizeColumnServer);
 //        tableViewServer.sort(fileTypeColumnServer);
+
+        tableViewServer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2) {
+                    if (tableViewServer.getSelectionModel().getSelectedItem()!=null) {
+                        FileInfoServer fis = tableViewServer.getSelectionModel().getSelectedItem();
+                        if (fis.isDir()){
+                            try {
+                                network.pathChangeRequest(fis);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void updateList(Path path) {

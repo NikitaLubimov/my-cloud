@@ -3,9 +3,7 @@ package ru.gb.cloudapplication;
 import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
 import io.netty.handler.codec.serialization.ObjectEncoderOutputStream;
 import javafx.application.Platform;
-import model.CloudMessage;
-import model.FileInfoServer;
-import model.ServerFilesListData;
+import model.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -48,5 +46,13 @@ public class Network {
 
     private void updateServerFilesList(ServerFilesListData serverFilesListData) {
         mainController.updateServerList(serverFilesListData.getFilelist());
+    }
+
+    public void  pathChangeRequest (FileInfoServer fis) throws IOException {
+        if (fis.getFileName().equals(FileInfoServer.HOME_DIR_NAME)) {
+            write(new ServerPathUpRequest());
+        } else {
+            write(new ServerPathInRequest(fis.getFileName()));
+        }
     }
 }

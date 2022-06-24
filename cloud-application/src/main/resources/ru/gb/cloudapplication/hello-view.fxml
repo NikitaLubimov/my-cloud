@@ -17,7 +17,7 @@
             <MenuItem text="Помощи не будет, кодь сам" />
         </Menu>
     </MenuBar>
-    <HBox alignment="CENTER_RIGHT" style="-fx-background-color: gray;">
+    <HBox alignment="CENTER_RIGHT" style="-fx-background-color: silver;">
         <HBox prefHeight="31.0" prefWidth="105.0" style="">
             <Label alignment="CENTER" prefHeight="27.0" prefWidth="110.0" text="MyCloud" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
                 <font>
@@ -47,7 +47,7 @@
             </HBox.margin>
         </Button>
     </HBox>
-    <HBox prefHeight="0.0" prefWidth="482.0" style="-fx-background-color: gray;">
+    <HBox prefHeight="0.0" prefWidth="482.0" style="-fx-background-color: silver;">
         <ComboBox fx:id="diskBoxClient" onAction="#selectDiskActionClient" prefHeight="25.0" prefWidth="39.0">
          <HBox.margin>
             <Insets left="5.0" />
@@ -68,7 +68,7 @@
          </HBox.margin></Button>
     </HBox>
 
-    <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: gray;" VBox.vgrow="ALWAYS">
+    <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: silver;" VBox.vgrow="ALWAYS">
         <TableView fx:id="tableViewClient" HBox.hgrow="ALWAYS">
          <HBox.margin>
             <Insets left="5.0" right="5.0" top="2.0" />
@@ -79,7 +79,7 @@
          </HBox.margin></TableView>
     </HBox>
 
-    <HBox alignment="CENTER" style="-fx-background-color: gray;">
+    <HBox alignment="CENTER" style="-fx-background-color: silver;">
         <Button maxWidth="Infinity" onAction="#pushFail" text="Загрузить файл" HBox.hgrow="ALWAYS">
             <HBox.margin>
                 <Insets right="5.0" />
