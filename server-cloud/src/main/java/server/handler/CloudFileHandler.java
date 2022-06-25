@@ -18,12 +18,10 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
     private Path currentDirUser;
     private FilesStorage filesStorage;
 
-    public  CloudFileHandler (FilesStorage filesStorage) {
+    public CloudFileHandler(FilesStorage filesStorage) {
         this.filesStorage = filesStorage;
         this.currentDir = filesStorage.getUserPathStart();
     }
-
-
 
 
     @Override
@@ -40,9 +38,17 @@ public class CloudFileHandler extends SimpleChannelInboundHandler<CloudMessage> 
                 currentDir = filesStorage.currentDirUp(currentDir);
                 ctx.writeAndFlush(new ServerFilesListData(filesStorage.getFilesOnServer(currentDir)));
             }
-        } else if (cloudMessage instanceof  ServerPathInRequest spir) {
-            currentDir = filesStorage.currentDirIn(spir,currentDir);
+        } else if (cloudMessage instanceof ServerPathInRequest spir) {
+            currentDir = filesStorage.currentDirIn(spir, currentDir);
             ctx.writeAndFlush(new ServerFilesListData(filesStorage.getFilesOnServer(currentDir)));
+        } else if (cloudMessage instanceof SendFilesToServer sendFilesToServer) {
+            filesStorage.saveFile(sendFilesToServer, currentDir);
+            ctx.writeAndFlush(new ServerFilesListData(filesStorage.getFilesOnServer(currentDir)));
+        } else if (cloudMessage instanceof RequestFilesToServer) {
+            ctx.writeAndFlush(new ServerFilesListData(filesStorage.getFilesOnServer(currentDir)));
+        } else if (cloudMessage instanceof FileDownloadInServer fileDown) {
+            SendFilesToServer sendFilesToServer = new SendFilesToServer(filesStorage.getFileData(fileDown.getFileName(), currentDir), fileDown.getFileName());
+            ctx.writeAndFlush(sendFilesToServer);
         }
     }
 }

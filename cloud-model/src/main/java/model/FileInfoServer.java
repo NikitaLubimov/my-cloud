@@ -16,7 +16,6 @@ public class FileInfoServer implements CloudMessage {
     private long size;
     private boolean isDir;
 
-
     public String getFileName() {
         return fileName;
     }
@@ -35,6 +34,13 @@ public class FileInfoServer implements CloudMessage {
 
     public boolean isDir() {
         return isDir;
+    }
+
+    public String isType() {
+        if (this.isDir) {
+            return "D";
+        }
+        return "F";
     }
 
     public void setDir(boolean dir) {

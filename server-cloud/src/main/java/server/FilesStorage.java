@@ -1,6 +1,7 @@
 package server;
 
 import model.FileInfoServer;
+import model.SendFilesToServer;
 import model.ServerPathInRequest;
 
 import java.io.File;
@@ -54,5 +55,19 @@ public class FilesStorage {
     public Path currentDirIn (ServerPathInRequest spir, Path path) {
         Path newPath = path.resolve(spir.getNameDirect());
         return newPath;
+    }
+
+    public void saveFile (SendFilesToServer sendFilesToServer, Path currentDirectory) throws IOException {
+        Files.write(currentDirectory.resolve(sendFilesToServer.getName()),sendFilesToServer.getData());
+    }
+
+    public byte[] getFileData (String name, Path path) throws IOException {
+        Path pathFile = path.resolve(name);
+
+        if (!Files.isDirectory(pathFile)) {
+            throw new RuntimeException("Выбранное является деректорией");
+        }
+
+        return Files.readAllBytes(pathFile);
     }
 }

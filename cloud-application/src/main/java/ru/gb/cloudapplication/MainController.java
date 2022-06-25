@@ -2,6 +2,7 @@ package ru.gb.cloudapplication;
 
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import model.*;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -39,13 +41,12 @@ public class MainController implements Initializable {
     public TextField pathFieldServer;
     @FXML
     public ComboBox diskBoxServer;
-
     private Network network;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            network = new Network(8189 , this);
+            network = new Network(8189, this);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -132,6 +133,9 @@ public class MainController implements Initializable {
     // Заполнение сервера таблицы
     private void readyServerTable() {
 
+        TableColumn<FileInfoServer, String> fileTypeColumnServer = new TableColumn<>();
+        fileTypeColumnServer.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().isType()));
+
         TableColumn<FileInfoServer, String> fileNameColumnServer = new TableColumn<>("Имя");
         fileNameColumnServer.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getFileName()));
         fileNameColumnServer.setPrefWidth(180);
@@ -159,16 +163,16 @@ public class MainController implements Initializable {
             };
         });
 
-        tableViewServer.getColumns().addAll(fileNameColumnServer, fileSizeColumnServer);
-//        tableViewServer.sort(fileTypeColumnServer);
+        tableViewServer.getColumns().addAll(fileTypeColumnServer, fileNameColumnServer, fileSizeColumnServer);
+        tableViewServer.getSortOrder().add(fileTypeColumnServer);
 
         tableViewServer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {
-                    if (tableViewServer.getSelectionModel().getSelectedItem()!=null) {
+                    if (tableViewServer.getSelectionModel().getSelectedItem() != null) {
                         FileInfoServer fis = tableViewServer.getSelectionModel().getSelectedItem();
-                        if (fis.isDir()){
+                        if (fis.isDir()) {
                             try {
                                 network.pathChangeRequest(fis);
                             } catch (IOException e) {
@@ -185,7 +189,7 @@ public class MainController implements Initializable {
         try {
             pathFieldClient.setText(path.normalize().toAbsolutePath().toString());
             tableViewClient.getItems().clear();
-            tableViewClient.getItems().addAll(Files.list(path).map(FileInfo::new).collect(Collectors.toList()));
+            tableViewClient.getItems().addAll(Files.list(path).map(FileInfo::new).toList());
             tableViewClient.sort();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Не удалось обновить список файлов", ButtonType.OK);
@@ -202,8 +206,8 @@ public class MainController implements Initializable {
     }
 
     // кнопка вверх сервера
-    public void upPathServer(ActionEvent actionEvent) {
-
+    public void upPathServer(ActionEvent actionEvent) throws IOException {
+        network.write(new ServerPathUpRequest());
     }
 
     // выбор диска клиента
@@ -212,23 +216,54 @@ public class MainController implements Initializable {
         updateList(Paths.get(element.getSelectionModel().getSelectedItem()));
     }
 
-    // выбор диска сервера
-    public void selectDiskActionServer(ActionEvent actionEvent) {
-    }
 
-    // отправка файла
-    public void pushFail(ActionEvent actionEvent) {
-
-    }
-
-    // скачивание файла
+    // скачивание файла с сервера
     public void downFail(ActionEvent actionEvent) {
-
+        FileInfoServer file = tableViewServer.getSelectionModel().getSelectedItem();
+        if (file.isDir()) {
+            return;
+        } else {
+            try {
+                network.getFileFromServer(file.getFileName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void updateServerList (List<FileInfoServer> files) {
+    // отправка файла на сервер
+    public void sendFailToServer(ActionEvent actionEvent) throws IOException {
+        if (tableViewClient.getSelectionModel().getSelectedItem() != null) {
+            String file = tableViewClient.getSelectionModel().getSelectedItem().getFilename();
+            Path filePath = Paths.get(pathFieldClient.getText()).resolve(file);
+            if (Files.isDirectory(filePath)) {
+                return;
+            } else {
+                network.sendFileToServer(filePath);
+                network.requestFilesToServer();
+            }
+        }
+    }
+
+    // обновление таблицы файлов на клиенте
+    public void updateServerList(List<FileInfoServer> files) {
         tableViewServer.getItems().clear();
         tableViewServer.getItems().addAll(files);
         tableViewServer.sort();
+    }
+
+    // возвращает текущею деррикторию клиента
+    public String getCurrentPath() {
+        return pathFieldClient.getText();
+    }
+
+    // кнопка закрытия приложения
+    public void close(ActionEvent actionEvent) {
+        Platform.exit();
+    }
+
+    // кнопка удаления файла
+    public void deleteFile(ActionEvent actionEvent) {
+
     }
 }
